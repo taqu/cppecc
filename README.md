@@ -45,6 +45,10 @@ int main(void)
 I choose a primitive `0x11D` for the generation polynomial (from the specification of The QR code).
 You may be able to change it, but should regenerate tables 'gfexp' and 'gflog'.
 
+## Limitations
+I limit the size of redundant symbols (error correction capacity) for my use. It's equivalent to about 10% error correnction capability.
+You can change this with the constant `RS_MAX_ECC_SIZE`.
+
 # License
 This software is distributed under two licenses 'The MIT License' or 'Public Domain', choose whichever you like.
 
