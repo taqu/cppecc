@@ -459,7 +459,7 @@ void rs_generator_poly(rs_s32 size, rs_u8 result[], rs_u8 tmp[])
 void rs_encode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSymbols)
 {
     CPPRS_ASSERT(CPPRS_NULL != context);
-    CPPRS_ASSERT((size + numSymbols) < RS_GF_NW);
+    CPPRS_ASSERT(CPPRS_STATIC_CAST(rs_u32)(size + numSymbols) < RS_GF_NW);
     CPPRS_ASSERT(numSymbols <= RS_MAX_ECC_SIZE);
 
     rs_u8* result = context->temp0_;
@@ -647,7 +647,7 @@ void rs_error_correct_forney(rs_u8 result[], rs_s32 length, rs_s32 numErrors, co
 rs_s32 rs_decode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSymbols)
 {
     rs_s32 messageSize = size + numSymbols;
-    CPPRS_ASSERT(messageSize < RS_GF_NW);
+    CPPRS_ASSERT(CPPRS_STATIC_CAST(rs_u32)(messageSize) < RS_GF_NW);
     CPPRS_ASSERT(numSymbols <= RS_MAX_ECC_SIZE);
 
     rs_u8* syndromes = context->syndromes_;
