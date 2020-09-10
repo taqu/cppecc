@@ -154,6 +154,11 @@ struct RSContext
     rs_u8 temp0_[RS_GF_NW];
 };
 
+/**
+ @brief Initialize the generation polynomial from numSymbols.
+ @param [in,out] context
+ @param [in] numSymbols
+ */
 void gf_initialize(RSContext* context, rs_s32 numSymbols);
 
 rs_u8 gf_add(rs_u8 a, rs_u8 b);
@@ -183,7 +188,23 @@ rs_s32 rs_chien_search(rs_u8 result[2], rs_u8 start, rs_u8 end, rs_u8 a, rs_u8 b
 rs_s32 rs_chien_search(rs_u8 result[], rs_u8 size, rs_u8 numSigma, const rs_u8 sigma[]);
 void rs_error_correct_forney(rs_u8 result[], rs_s32 length, rs_s32 numErrors, const rs_u8 pos[], rs_s32 numSigma, const rs_u8 sigma[], rs_s32 numOmega, const rs_u8 omega[]);
 
+/**
+ @brief Add redundant data to the original message for error correction.
+ @param [in, out] context ... Used for the generation polynomial and buffers.
+ @param [in] size ... message size
+ @param [in, out] message[] ... The size should be 'size + numSymbols'. Output will be made from the original message and added redundant symbols (that size is numSymbols).
+ @param numSymbols ... size of redundant symbols, that is equivalent to capability of error corrections.
+ */
 void rs_encode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSymbols);
+
+/**
+ @brief Try to recover the original message from redundant symbols. But, when the number of errors exceeds the capability of Reed-Solomon codes, the message never be recoverted correctly.
+ @param [in, out] context ... Used for buffers
+ @param [in] size ... message size
+ @param [in, out] message[] ... The size should be 'size + numSymbols'. Output's corrupted symbols will be corrected.
+ @param numSymbols ... size of redundant symbols, that is equivalent to capability of error corrections.
+ @return The number of corrected symbols. When the number of erros exceeds the capability (so, it's numSymbols/2), the original message will not be recovered.
+ */
 rs_s32 rs_decode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSymbols);
 
 CPPRS_NAMESPACE_END(cpprs)
