@@ -15,24 +15,24 @@ using namespace cpprs;
 
 int main(void)
 {
-    static const rs_s32 MessageSize = 16;
-    static const rs_s32 ECCSize = 10;
-    rs_u8 message[MessageSize] = {110, 211, 97, 221, 35, 153, 52, 124, 191, 109, 194, 65, 59, 242, 74, 22};
-    rs_u8 diff[MessageSize+ECCSize] = {0, 0, 0, 92, 0, 237, 0, 0, 0, 8, 153, 0, 0, 0, 0, 0, 0, 0, 0, 0, 161, 0, 0, 0, 0, 0};
-    rs_u8 encoded[MessageSize + ECCSize];
-    rs_u8 decoded[MessageSize + ECCSize];
+    static const cppecc_s32 MessageSize = 16;
+    static const cppecc_s32 ECCSize = 10;
+    cppecc_u8 message[MessageSize] = {110, 211, 97, 221, 35, 153, 52, 124, 191, 109, 194, 65, 59, 242, 74, 22};
+    cppecc_u8 diff[MessageSize+ECCSize] = {0, 0, 0, 92, 0, 237, 0, 0, 0, 8, 153, 0, 0, 0, 0, 0, 0, 0, 0, 0, 161, 0, 0, 0, 0, 0};
+    cppecc_u8 encoded[MessageSize + ECCSize];
+    cppecc_u8 decoded[MessageSize + ECCSize];
 
     RSContext context;
     gf_initialize(&context, ECCSize);
 
     std::copy(message, message+MessageSize, encoded);
     rs_encode(&context, MessageSize, &encoded[0], ECCSize);
-    for(rs_s32 j = 0; j < (MessageSize + ECCSize); ++j) {
+    for(cppecc_s32 j = 0; j < (MessageSize + ECCSize); ++j) {
         decoded[j] = encoded[j] ^ diff[j];
     }
 
-    rs_s32 corrected = rs_decode(&context, MessageSize, &decoded[0], ECCSize);
-    for(rs_s32 j = 0; j < MessageSize; ++j) {
+    cppecc_s32 corrected = rs_decode(&context, MessageSize, &decoded[0], ECCSize);
+    for(cppecc_s32 j = 0; j < MessageSize; ++j) {
         if(message[j] != decoded[j]) {
             assert(false);
         }
