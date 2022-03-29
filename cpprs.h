@@ -1,20 +1,32 @@
-#ifndef INC_CPPRS_H_
-#define INC_CPPRS_H_
+#ifndef INC_CPPECC_H_
+#define INC_CPPECC_H_
 /**
-@file cpprs.h
+@file cppecc.h
 @author t-sakai
 
 # License
 This software is distributed under two licenses, choose whichever you like.
 
 ## MIT License
-Copyright (c) 2020 Takuro Sakai
+Copyright (c) 2022 Takuro Sakai
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ## Public Domain
 This is free and unencumbered software released into the public domain.
@@ -44,11 +56,11 @@ For more information, please refer to <http://unlicense.org>
 ```
 
 # Abount Reed-Solomon Codes
-https://www.cs.cmu.edu/~guyb/realworld/cpprs/reed_solomon_codes.html
+https://www.cs.cmu.edu/~guyb/realworld/cppecc/reed_solomon_codes.html
 https://en.wikiversity.org/wiki/Reed%E2%80%93Solomon_codes_for_coders
 
 # Usage
-Put '#define CPPRS_IMPLEMENTATION' before including this file to create the implementation.
+Put '#define CPPECC_IMPLEMENTATION' before including this file to create the implementation.
 */
 #include <assert.h>
 #include <math.h>
@@ -60,98 +72,98 @@ Put '#define CPPRS_IMPLEMENTATION' before including this file to create the impl
 #endif
 
 #ifdef __cplusplus
-#    define CPPRS_NAMESPACE_BEGIN(name) \
+#    define CPPECC_NAMESPACE_BEGIN(name) \
         namespace name \
         {
-#    define CPPRS_NAMESPACE_END(name) }
-#    define CPPRS_NAMESPACE_EMPTY_BEGIN \
+#    define CPPECC_NAMESPACE_END(name) }
+#    define CPPECC_NAMESPACE_EMPTY_BEGIN \
         namespace \
         {
-#    define CPPRS_NAMESPACE_EMPTY_END }
-#    define CPPRS_STATIC
-#    define CPPRS_REINTERPRET_CAST(type) reinterpret_cast<type>
-#    define CPPRS_STATIC_CAST(type) static_cast<type>
+#    define CPPECC_NAMESPACE_EMPTY_END }
+#    define CPPECC_STATIC
+#    define CPPECC_REINTERPRET_CAST(type) reinterpret_cast<type>
+#    define CPPECC_STATIC_CAST(type) static_cast<type>
 #else
-#    define CPPRS_NAMESPACE_BEGIN(name)
-#    define CPPRS_NAMESPACE_END(name)
-#    define CPPRS_NAMESPACE_EMPTY_BEGIN
-#    define CPPRS_NAMESPACE_EMPTY_END
-#    define CPPRS_STATIC static
-#    define CPPRS_REINTERPRET_CAST(type) (type)
-#    define CPPRS_STATIC_CAST(type) (type)
+#    define CPPECC_NAMESPACE_BEGIN(name)
+#    define CPPECC_NAMESPACE_END(name)
+#    define CPPECC_NAMESPACE_EMPTY_BEGIN
+#    define CPPECC_NAMESPACE_EMPTY_END
+#    define CPPECC_STATIC static
+#    define CPPECC_REINTERPRET_CAST(type) (type)
+#    define CPPECC_STATIC_CAST(type) (type)
 #endif
 
-CPPRS_NAMESPACE_BEGIN(cpprs)
+CPPECC_NAMESPACE_BEGIN(cppecc)
 
-#ifndef CPPRS_NULL
+#ifndef CPPECC_NULL
 #    ifdef __cplusplus
 #        if 201103L <= __cplusplus || 1700 <= _MSC_VER
-#            define CPPRS_NULL nullptr
+#            define CPPECC_NULL nullptr
 #        else
-#            define CPPRS_NULL 0
+#            define CPPECC_NULL 0
 #        endif
 #    else
-#        define CPPRS_NULL (void*)0
+#        define CPPECC_NULL (void*)0
 #    endif
 #endif
 
-#ifndef CPPRS_TYPES
-#    define CPPRS_TYPES
-typedef int8_t rs_s8;
-typedef int16_t rs_s16;
-typedef int32_t rs_s32;
-typedef int64_t rs_s64;
+#ifndef CPPECC_TYPES
+#    define CPPECC_TYPES
+typedef int8_t cppecc_s8;
+typedef int16_t cppecc_s16;
+typedef int32_t cppecc_s32;
+typedef int64_t cppecc_s64;
 
-typedef uint8_t rs_u8;
-typedef uint16_t rs_u16;
-typedef uint32_t rs_u32;
-typedef uint64_t rs_u64;
+typedef uint8_t cppecc_u8;
+typedef uint16_t cppecc_u16;
+typedef uint32_t cppecc_u32;
+typedef uint64_t cppecc_u64;
 
-typedef float rs_f32;
-typedef double rs_f64;
+typedef float cppecc_f32;
+typedef double cppecc_f64;
 
-typedef size_t rs_size_t;
-#endif // CPPRS_TYPES
+typedef size_t cppecc_size_t;
+#endif // CPPECC_TYPES
 
-#ifndef CPPRS_ASSERT
-#    define CPPRS_ASSERT(exp) assert(exp)
+#ifndef CPPECC_ASSERT
+#    define CPPECC_ASSERT(exp) assert(exp)
 #endif
 
 #ifdef __cplusplus
-static const rs_u32 RS_GF_W = 8;
-static const rs_u32 RS_GF_NW = (1 << RS_GF_W);
-static const rs_u32 RS_GF_NW1 = RS_GF_NW - 1;
+static const cppecc_u32 CPPECC_GF_W = 8;
+static const cppecc_u32 CPPECC_GF_NW = (1 << CPPECC_GF_W);
+static const cppecc_u32 CPPECC_GF_NW1 = CPPECC_GF_NW - 1;
 
-//static const rs_u32 RS_GF_PRIMITIVE = 0x11DU;
+//static const cppecc_u32 RS_GF_PRIMITIVE = 0x11DU;
 
-static const rs_s32 RS_MAX_BODY_SIZE = RS_GF_NW1;
-static const rs_s32 RS_MAX_ECC_SIZE = 52;
-static const rs_s32 RS_MAX_ECC_RATE = 10;
+static const cppecc_s32 CPPECC_MAX_BODY_SIZE = CPPECC_GF_NW1;
+static const cppecc_s32 CPPECC_MAX_ECC_SIZE = 52;
+static const cppecc_s32 CPPECC_MAX_ECC_RATE = 10;
 
-static const rs_s32 RS_ERROR = -1;
+static const cppecc_s32 CPPECC_ERROR = -1;
 
 #else
-#    define RS_GF_W (8)
-#    define RS_GF_NW (1 << RS_GF_W)
-#    define RS_GF_NW1 (RS_GF_NW - 1)
+#    define CPPECC_GF_W (8)
+#    define CPPECC_GF_NW (1 << CPPECC_GF_W)
+#    define CPPECC_GF_NW1 (CPPECC_GF_NW - 1)
 //#define RS_GF_PRIMITIVE (0x11DU)
 
-#    define RS_MAX_BODY_SIZE (RS_GF_NW1)
-#    define RS_MAX_ECC_SIZE (52)
-#    define RS_MAX_ECC_RATE (10)
+#    define CPPECC_MAX_BODY_SIZE (CPPECC_GF_NW1)
+#    define CPPECC_MAX_ECC_SIZE (52)
+#    define CPPECC_MAX_ECC_RATE (10)
 
-#    define RS_ERROR (-1)
+#    define CPPECC_ERROR (-1)
 #endif
 
 struct RSContext
 {
-    rs_u8 generator_[RS_MAX_ECC_SIZE + 1];
-    rs_u8 syndromes_[RS_MAX_ECC_SIZE + 1];
-    rs_u8 sigma_[RS_MAX_ECC_SIZE];
-    rs_u8 errorPositions_[RS_MAX_ECC_SIZE];
-    rs_u8 omega_[RS_MAX_ECC_SIZE + RS_MAX_ECC_SIZE];
+    cppecc_u8 generator_[CPPECC_MAX_ECC_SIZE + 1];
+    cppecc_u8 syndromes_[CPPECC_MAX_ECC_SIZE + 1];
+    cppecc_u8 sigma_[CPPECC_MAX_ECC_SIZE];
+    cppecc_u8 errorPositions_[CPPECC_MAX_ECC_SIZE];
+    cppecc_u8 omega_[CPPECC_MAX_ECC_SIZE + CPPECC_MAX_ECC_SIZE];
 
-    rs_u8 temp0_[RS_GF_NW];
+    cppecc_u8 temp0_[CPPECC_GF_NW];
 };
 
 /**
@@ -159,43 +171,43 @@ struct RSContext
  @param [in,out] context
  @param [in] numSymbols
  */
-void gf_initialize(RSContext* context, rs_s32 numSymbols);
+void gf_initialize(RSContext* context, cppecc_s32 numSymbols);
 
-rs_u8 gf_add(rs_u8 a, rs_u8 b);
+cppecc_u8 gf_add(cppecc_u8 a, cppecc_u8 b);
 
-rs_u8 gf_mul(rs_u8 a, rs_u8 b);
+cppecc_u8 gf_mul(cppecc_u8 a, cppecc_u8 b);
 
-rs_u8 gf_div(rs_u8 a, rs_u8 b);
+cppecc_u8 gf_div(cppecc_u8 a, cppecc_u8 b);
 
-rs_u8 gf_pow(rs_u8 x, rs_s32 p);
+cppecc_u8 gf_pow(cppecc_u8 x, cppecc_s32 p);
 
-rs_u8 gf_inverse(rs_u8 x);
+cppecc_u8 gf_inverse(cppecc_u8 x);
 
-void gf_poly_scale(rs_s32 size, rs_u8 result[], const rs_u8 p[], rs_u8 x);
+void gf_poly_scale(cppecc_s32 size, cppecc_u8 result[], const cppecc_u8 p[], cppecc_u8 x);
 
-rs_s32 gf_poly_add(rs_u8 result[], rs_s32 psize, const rs_u8 p[], rs_s32 qsize, const rs_u8 q[]);
+cppecc_s32 gf_poly_add(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[]);
 
-rs_s32 gf_poly_mul(rs_u8 result[], rs_s32 psize, const rs_u8 p[], rs_s32 qsize, const rs_u8 q[]);
+cppecc_s32 gf_poly_mul(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[]);
 
-rs_u8 gf_poly_eval(rs_s32 size, const rs_u8 poly[], rs_u8 x);
+cppecc_u8 gf_poly_eval(cppecc_s32 size, const cppecc_u8 poly[], cppecc_u8 x);
 
-rs_s32 gf_poly_div(rs_u8 result[], rs_s32 sizeDividend, const rs_u8 dividend[], rs_s32 sizeDivisor, const rs_u8 divisor[]);
+cppecc_s32 gf_poly_div(cppecc_u8 result[], cppecc_s32 sizeDividend, const cppecc_u8 dividend[], cppecc_s32 sizeDivisor, const cppecc_u8 divisor[]);
 
-void rs_generator_poly(rs_s32 size, rs_u8 result[], rs_u8 tmp[]);
+void rs_generator_poly(cppecc_s32 size, cppecc_u8 result[], cppecc_u8 tmp[]);
 
-rs_s32 rs_modified_berlekamp_massey(RSContext* context, rs_u8 result[], rs_s32 numSyndromes, const rs_u8 syndromes[]);
-rs_s32 rs_chien_search(rs_u8 result[2], rs_u8 start, rs_u8 end, rs_u8 a, rs_u8 b);
-rs_s32 rs_chien_search(rs_u8 result[], rs_u8 size, rs_u8 numSigma, const rs_u8 sigma[]);
-void rs_error_correct_forney(rs_u8 result[], rs_s32 length, rs_s32 numErrors, const rs_u8 pos[], rs_s32 numSigma, const rs_u8 sigma[], rs_s32 numOmega, const rs_u8 omega[]);
+cppecc_s32 rs_modified_berlekamp_massey(RSContext* context, cppecc_u8 result[], cppecc_s32 numSyndromes, const cppecc_u8 syndromes[]);
+cppecc_s32 rs_chien_search(cppecc_u8 result[2], cppecc_u8 start, cppecc_u8 end, cppecc_u8 a, cppecc_u8 b);
+cppecc_s32 rs_chien_search(cppecc_u8 result[], cppecc_u8 size, cppecc_u8 numSigma, const cppecc_u8 sigma[]);
+void rs_error_correct_forney(cppecc_u8 result[], cppecc_s32 length, cppecc_s32 numErrors, const cppecc_u8 pos[], cppecc_s32 numSigma, const cppecc_u8 sigma[], cppecc_s32 numOmega, const cppecc_u8 omega[]);
 
 /**
  @brief Add redundant data to the original message for error correction.
  @param [in, out] context ... Used for the generation polynomial and buffers.
  @param [in] size ... message size
  @param [in, out] message[] ... The size should be 'size + numSymbols'. Output will be made from the original message and added redundant symbols (that size is numSymbols).
- @param numSymbols ... size of redundant symbols, that is equivalent to capability of error corrections.
+ @param numSymbols ... size of redundant symbols, that is equivalent to capability of error corrections * 2.
  */
-void rs_encode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSymbols);
+void rs_encode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols);
 
 /**
  @brief Try to recover the original message from redundant symbols. But, when the number of errors exceeds the capability of Reed-Solomon codes, the message never be recoverted correctly.
@@ -203,20 +215,20 @@ void rs_encode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSymbo
  @param [in] size ... message size
  @param [in, out] message[] ... The size should be 'size + numSymbols'. Output's corrupted symbols will be corrected.
  @param numSymbols ... size of redundant symbols, that is equivalent to capability of error corrections.
- @return The number of corrected symbols. When the number of erros exceeds the capability (so, it's numSymbols/2), the original message will not be recovered.
+ @return The number of corrected symbols. When the number of erros exceeds the capability (so, it's numSymbols/2), the original message may not be recovered.
  */
-rs_s32 rs_decode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSymbols);
+cppecc_s32 rs_decode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols);
 
-CPPRS_NAMESPACE_END(cpprs)
-#endif // INC_CPPRS_H_
+CPPECC_NAMESPACE_END(cppecc)
+#endif // INC_CPPECC_H_
 
-#ifdef CPPRS_IMPLEMENTATION
-CPPRS_NAMESPACE_BEGIN(cpprs)
+#ifdef CPPECC_IMPLEMENTATION
+CPPECC_NAMESPACE_BEGIN(cppecc)
 
-CPPRS_NAMESPACE_EMPTY_BEGIN
+CPPECC_NAMESPACE_EMPTY_BEGIN
 
 // clang-format off
-static const rs_u8 gflog[RS_GF_NW]={
+static const cppecc_u8 gflog[CPPECC_GF_NW]={
     0x0U,0x0U,0x1U,0x19U,0x2U,0x32U,0x1AU,0xC6U,0x3U,0xDFU,0x33U,0xEEU,0x1BU,0x68U,0xC7U,0x4BU,
     0x4U,0x64U,0xE0U,0xEU,0x34U,0x8DU,0xEFU,0x81U,0x1CU,0xC1U,0x69U,0xF8U,0xC8U,0x8U,0x4CU,0x71U,
     0x5U,0x8AU,0x65U,0x2FU,0xE1U,0x24U,0xFU,0x21U,0x35U,0x93U,0x8EU,0xDAU,0xF0U,0x12U,0x82U,0x45U,
@@ -237,7 +249,7 @@ static const rs_u8 gflog[RS_GF_NW]={
 // clang-format on
 
 // clang-format off
-static const rs_u8 gfexp[RS_GF_NW]={
+static const cppecc_u8 gfexp[CPPECC_GF_NW]={
     0x1U,0x2U,0x4U,0x8U,0x10U,0x20U,0x40U,0x80U,0x1DU,0x3AU,0x74U,0xE8U,0xCDU,0x87U,0x13U,0x26U,
     0x4CU,0x98U,0x2DU,0x5AU,0xB4U,0x75U,0xEAU,0xC9U,0x8FU,0x3U,0x6U,0xCU,0x18U,0x30U,0x60U,0xC0U,
     0x9DU,0x27U,0x4EU,0x9CU,0x25U,0x4AU,0x94U,0x35U,0x6AU,0xD4U,0xB5U,0x77U,0xEEU,0xC1U,0x9FU,0x23U,
@@ -257,148 +269,136 @@ static const rs_u8 gfexp[RS_GF_NW]={
 };
 // clang-format off
 
-CPPRS_NAMESPACE_EMPTY_END
+CPPECC_NAMESPACE_EMPTY_END
 
 //
-void gf_initialize(RSContext* context, rs_s32 numSymbols)
+void gf_initialize(RSContext* context, cppecc_s32 numSymbols)
 {
-    //const rs_u32 prim = GF_PRIMITIVE;
-    //const rs_u32 nw1 = RS_GF_NW1;
-    //gflog[0] = 0;
-    //rs_u32 b=1;
-    //for(rs_u32 log=0; log<nw1; ++log){
-    //    gflog[b] = log;
-    //    gfexp[log] = b;
-    //    b <<= 1;
-    //    if(0 != (b & RS_GF_NW)){
-    //        b = (b ^ prim) & RS_GF_NW1;
-    //    }
-    //}
     rs_generator_poly(numSymbols, context->generator_, context->temp0_);
 }
 
-rs_u8 gf_add(rs_u8 a, rs_u8 b)
+cppecc_u8 gf_add(cppecc_u8 a, cppecc_u8 b)
 {
     return a ^ b;
 }
 
 //
-rs_u8 gf_mul(rs_u8 a, rs_u8 b)
+cppecc_u8 gf_mul(cppecc_u8 a, cppecc_u8 b)
 {
     if(0 == a || 0 == b) {
         return 0;
     }
-    rs_u32 sum = CPPRS_STATIC_CAST(rs_s32)(gflog[a]) + gflog[b];
-    if(RS_GF_NW1 <= sum) {
-        sum -= RS_GF_NW1;
+    cppecc_u32 sum = CPPECC_STATIC_CAST(cppecc_s32)(gflog[a]) + gflog[b];
+    if(CPPECC_GF_NW1 <= sum) {
+        sum -= CPPECC_GF_NW1;
     }
     return gfexp[sum];
 }
 
-rs_u8 gf_mulexp(rs_u8 a, rs_u8 b)
+cppecc_u8 gf_mulexp(cppecc_u8 a, cppecc_u8 b)
 {
     if(0 == a) {
         return 0;
     }
-    rs_u32 sum = CPPRS_STATIC_CAST(rs_s32)(gflog[a]) + b;
-    if(RS_GF_NW1 <= sum) {
-        sum -= RS_GF_NW1;
+    cppecc_u32 sum = CPPECC_STATIC_CAST(cppecc_s32)(gflog[a]) + b;
+    if(CPPECC_GF_NW1 <= sum) {
+        sum -= CPPECC_GF_NW1;
     }
     return gfexp[sum];
 }
 
 //
-rs_u8 gf_div(rs_u8 a, rs_u8 b)
+cppecc_u8 gf_div(cppecc_u8 a, cppecc_u8 b)
 {
     if(0 == a) {
         return 0;
     }
     if(0 == b) {
-        return CPPRS_STATIC_CAST(rs_u8)(-1);
+        return CPPECC_STATIC_CAST(cppecc_u8)(-1);
     }
-    rs_s32 diff = CPPRS_STATIC_CAST(rs_s32)(gflog[a]) - gflog[b];
+    cppecc_s32 diff = CPPECC_STATIC_CAST(cppecc_s32)(gflog[a]) - gflog[b];
     if(diff < 0) {
-        diff += RS_GF_NW1;
+        diff += CPPECC_GF_NW1;
     }
     return gfexp[diff];
 }
 
-rs_u8 gf_divexp(rs_u8 a, rs_u8 b)
+cppecc_u8 gf_divexp(cppecc_u8 a, cppecc_u8 b)
 {
     if(0 == a) {
         return 0;
     }
-    rs_s32 diff = CPPRS_STATIC_CAST(rs_s32)(gflog[a]) - b;
+    cppecc_s32 diff = CPPECC_STATIC_CAST(cppecc_s32)(gflog[a]) - b;
     if(diff < 0) {
-        diff += RS_GF_NW1;
+        diff += CPPECC_GF_NW1;
     }
     return gfexp[diff];
 }
 
-rs_u8 gf_pow(rs_u8 x, rs_s32 p)
+cppecc_u8 gf_pow(cppecc_u8 x, cppecc_s32 p)
 {
-    return gfexp[(gflog[x] * p) % RS_GF_NW1];
+    return gfexp[(gflog[x] * p) % CPPECC_GF_NW1];
 }
 
-rs_u8 gf_inverse(rs_u8 x)
+cppecc_u8 gf_inverse(cppecc_u8 x)
 {
-    return gfexp[RS_GF_NW1 - gflog[x]];
+    return gfexp[CPPECC_GF_NW1 - gflog[x]];
 }
 
-void gf_poly_scale(rs_s32 size, rs_u8 result[], const rs_u8 p[], rs_u8 x)
+void gf_poly_scale(cppecc_s32 size, cppecc_u8 result[], const cppecc_u8 p[], cppecc_u8 x)
 {
-    for(rs_s32 i = 0; i < size; ++i) {
+    for(cppecc_s32 i = 0; i < size; ++i) {
         result[i] = gf_mul(p[i], x);
     }
 }
 
-rs_s32 gf_poly_add(rs_u8 result[], rs_s32 psize, const rs_u8 p[], rs_s32 qsize, const rs_u8 q[])
+cppecc_s32 gf_poly_add(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[])
 {
-    rs_s32 size = (psize < qsize) ? qsize : psize;
-    rs_s32 d = (psize < qsize) ? qsize - psize : 0;
-    for(rs_s32 i = 0; i < d; ++i) {
+    cppecc_s32 size = (psize < qsize) ? qsize : psize;
+    cppecc_s32 d = (psize < qsize) ? qsize - psize : 0;
+    for(cppecc_s32 i = 0; i < d; ++i) {
         result[i] = 0;
     }
 
-    for(rs_s32 i = 0; i < psize; ++i) {
+    for(cppecc_s32 i = 0; i < psize; ++i) {
         result[i + size - psize] = p[i];
     }
 
-    for(rs_s32 i = 0; i < qsize; ++i) {
+    for(cppecc_s32 i = 0; i < qsize; ++i) {
         result[i + size - qsize] ^= q[i];
     }
     return size;
 }
 
-rs_s32 gf_poly_mul(rs_u8 result[], rs_s32 psize, const rs_u8 p[], rs_s32 qsize, const rs_u8 q[])
+cppecc_s32 gf_poly_mul(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[])
 {
-    rs_s32 total = psize + qsize - 1;
-    for(rs_s32 i = 0; i < total; ++i) {
+    cppecc_s32 total = psize + qsize - 1;
+    for(cppecc_s32 i = 0; i < total; ++i) {
         result[i] = 0;
     }
-    for(rs_s32 i = 0; i < qsize; ++i) {
-        for(rs_s32 j = 0; j < psize; ++j) {
+    for(cppecc_s32 i = 0; i < qsize; ++i) {
+        for(cppecc_s32 j = 0; j < psize; ++j) {
             result[i + j] ^= gf_mul(p[j], q[i]);
         }
     }
     return total;
 }
 
-rs_s32 gf_poly_mul(rs_u8 result[], rs_s32 psize, const rs_u8 p[], rs_s32 qsize, const rs_u8 q[], rs_s32 l)
+cppecc_s32 gf_poly_mul(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[], cppecc_s32 l)
 {
-    rs_s32 total = l;
-    for(rs_s32 i = 0; i < total; ++i) {
+    cppecc_s32 total = l;
+    for(cppecc_s32 i = 0; i < total; ++i) {
         result[i] = 0;
     }
     psize = (psize < l) ? psize : l;
-    for(rs_s32 i = 0; i < psize; ++i) {
+    for(cppecc_s32 i = 0; i < psize; ++i) {
         if(0 == p[i]) {
             continue;
         }
-        rs_u8 logp = gflog[p[i]];
-        rs_s32 qs = l - i;
+        cppecc_u8 logp = gflog[p[i]];
+        cppecc_s32 qs = l - i;
         qs = qsize < qs ? qsize : qs;
-        for(rs_s32 j = 0; j < qs; ++j) {
+        for(cppecc_s32 j = 0; j < qs; ++j) {
             if(0 == q[j]) {
                 continue;
             }
@@ -408,26 +408,26 @@ rs_s32 gf_poly_mul(rs_u8 result[], rs_s32 psize, const rs_u8 p[], rs_s32 qsize, 
     return total;
 }
 
-rs_u8 gf_poly_eval(rs_s32 size, const rs_u8 poly[], rs_u8 x)
+cppecc_u8 gf_poly_eval(cppecc_s32 size, const cppecc_u8 poly[], cppecc_u8 x)
 {
-    rs_u8 y = poly[0];
-    for(rs_s32 i = 1; i < size; ++i) {
+    cppecc_u8 y = poly[0];
+    for(cppecc_s32 i = 1; i < size; ++i) {
         y = gf_mul(y, x) ^ poly[i];
     }
     return y;
 }
 
 #if 0
-rs_s32 gf_poly_div(rs_u8 result[], rs_s32 sizeDividend, const rs_u8 dividend[], rs_s32 sizeDivisor, const rs_u8 divisor[])
+cppecc_s32 gf_poly_div(cppecc_u8 result[], cppecc_s32 sizeDividend, const cppecc_u8 dividend[], cppecc_s32 sizeDivisor, const cppecc_u8 divisor[])
 {
-    for(rs_s32 i=0; i<sizeDividend; ++i){
+    for(cppecc_s32 i=0; i<sizeDividend; ++i){
         result[i] = dividend[i];
     }
-    rs_s32 size = sizeDividend - sizeDivisor + 1;
-    for(rs_s32 i=0; i<size; ++i){
-        rs_u8 coef = result[i];
+    cppecc_s32 size = sizeDividend - sizeDivisor + 1;
+    for(cppecc_s32 i=0; i<size; ++i){
+        cppecc_u8 coef = result[i];
         if( 0 != coef){
-            for(rs_s32 j=1; j<sizeDivisor; ++j){
+            for(cppecc_s32 j=1; j<sizeDivisor; ++j){
                 if(0 != divisor[j]){
                     result[i+j] ^= gf_mul(divisor[j], coef);
                 }
@@ -435,84 +435,84 @@ rs_s32 gf_poly_div(rs_u8 result[], rs_s32 sizeDividend, const rs_u8 dividend[], 
         }
     }
 
-    rs_s32 sizeResult = sizeDividend - size;
-    for(rs_s32 i=0; i<sizeResult; ++i){
+    cppecc_s32 sizeResult = sizeDividend - size;
+    for(cppecc_s32 i=0; i<sizeResult; ++i){
         result[i] = result[i+size];
     }
     return sizeResult;
 }
 #endif
 
-rs_u8 gf_omega_value(rs_s32 numOmega, const rs_u8 omega[], rs_u8 l)
+cppecc_u8 gf_omega_value(cppecc_s32 numOmega, const cppecc_u8 omega[], cppecc_u8 l)
 {
-    rs_u8 w = l;
-    rs_u8 o = omega[0];
-    for(rs_s32 i = 1; i < numOmega; i++) {
+    cppecc_u8 w = l;
+    cppecc_u8 o = omega[0];
+    for(cppecc_s32 i = 1; i < numOmega; i++) {
         o ^= gf_mulexp(omega[i], w);
-        w = (w + l) % RS_GF_NW1;
+        w = (w + l) % CPPECC_GF_NW1;
     }
     return o;
 }
 
-rs_u8 gf_sigma_dash_value(rs_s32 numSigma, const rs_u8 sigma[], rs_u8 l)
+cppecc_u8 gf_sigma_dash_value(cppecc_s32 numSigma, const cppecc_u8 sigma[], cppecc_u8 l)
 {
-    rs_s32 size = numSigma - 1;
-    rs_u8 l2 = (2 * l) % RS_GF_NW1;
-    rs_u8 w = l2;
-    rs_u8 d = sigma[1];
-    for(rs_s32 i = 3; i <= size; i += 2) {
+    cppecc_s32 size = numSigma - 1;
+    cppecc_u8 l2 = (2 * l) % CPPECC_GF_NW1;
+    cppecc_u8 w = l2;
+    cppecc_u8 d = sigma[1];
+    for(cppecc_s32 i = 3; i <= size; i += 2) {
         d ^= gf_mulexp(sigma[i], w);
-        w = (w + l2) % RS_GF_NW1;
+        w = (w + l2) % CPPECC_GF_NW1;
     }
     return d;
 }
 
-void rs_generator_poly(rs_s32 size, rs_u8 result[], rs_u8 tmp[])
+void rs_generator_poly(cppecc_s32 size, cppecc_u8 result[], cppecc_u8 tmp[])
 {
     result[0] = 1;
-    rs_u8 poly[2] = {1, 0};
-    rs_s32 polySize = 1;
-    for(rs_s32 i = 0; i < size; ++i) {
+    cppecc_u8 poly[2] = {1, 0};
+    cppecc_s32 polySize = 1;
+    for(cppecc_s32 i = 0; i < size; ++i) {
         poly[1] = gfexp[i];
         polySize = gf_poly_mul(tmp, polySize, result, 2, poly);
-        for(rs_s32 j = 0; j < polySize; ++j) {
+        for(cppecc_s32 j = 0; j < polySize; ++j) {
             result[j] = tmp[j];
         }
     }
 }
 
-void rs_encode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSymbols)
+void rs_encode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols)
 {
-    CPPRS_ASSERT(CPPRS_NULL != context);
-    CPPRS_ASSERT(CPPRS_STATIC_CAST(rs_u32)(size + numSymbols) < RS_GF_NW);
-    CPPRS_ASSERT(numSymbols <= RS_MAX_ECC_SIZE);
+    CPPECC_ASSERT(CPPECC_NULL != context);
+    CPPECC_ASSERT(CPPECC_STATIC_CAST(cppecc_u32)(size + numSymbols) < CPPECC_GF_NW);
+    CPPECC_ASSERT(numSymbols <= CPPECC_MAX_ECC_SIZE);
 
-    rs_u8* result = context->temp0_;
-    for(rs_s32 i = 0; i < size; ++i) {
+    cppecc_u8* result = context->temp0_;
+    for(cppecc_s32 i = 0; i < size; ++i) {
         result[i] = message[i];
     }
-    rs_u8* generator = context->generator_;
-    rs_s32 total = size + numSymbols;
-    for(rs_s32 i = size; i < total; ++i) {
+    cppecc_u8* generator = context->generator_;
+    cppecc_s32 total = size + numSymbols;
+    for(cppecc_s32 i = size; i < total; ++i) {
         result[i] = 0;
     }
 
-    for(rs_s32 i = 0; i < size; ++i) {
+    for(cppecc_s32 i = 0; i < size; ++i) {
         if(0 != result[i]) {
-            for(rs_s32 j = 1; j <= numSymbols; ++j) {
+            for(cppecc_s32 j = 1; j <= numSymbols; ++j) {
                 result[i + j] ^= gf_mul(generator[j], result[i]);
             }
         }
     }
-    for(rs_s32 i = size; i < total; ++i) {
+    for(cppecc_s32 i = size; i < total; ++i) {
         message[i] = result[i];
     }
 }
 
 #if 0
-bool rs_has_erros(rs_s32 size, const rs_u8 syndromes[])
+bool rs_has_erros(cppecc_s32 size, const cppecc_u8 syndromes[])
 {
-    for(rs_s32 i = 1; i <= size; ++i) {
+    for(cppecc_s32 i = 1; i <= size; ++i) {
         if(0 != syndromes[i]) {
             return true;
         }
@@ -520,90 +520,90 @@ bool rs_has_erros(rs_s32 size, const rs_u8 syndromes[])
     return false;
 }
 
-void rs_forney_syndromes(rs_u8 forney_syndromes[], rs_s32 message_size, rs_s32 numSyndromes, const rs_u8 syndromes[], rs_s32 numErasePos, const rs_u8 erasePos[])
+void rs_forney_syndromes(cppecc_u8 forney_syndromes[], cppecc_s32 message_size, cppecc_s32 numSyndromes, const cppecc_u8 syndromes[], cppecc_s32 numErasePos, const cppecc_u8 erasePos[])
 {
-    for(rs_s32 i = 0; i < numSyndromes; ++i) {
+    for(cppecc_s32 i = 0; i < numSyndromes; ++i) {
         forney_syndromes[i] = syndromes[i];
     }
-    for(rs_s32 i = 0; i < numErasePos; ++i) {
-        rs_u8 x = gfexp[message_size - 1 - erasePos[i]];
-        for(rs_s32 j = 0; j < numSyndromes - 1; ++j) {
+    for(cppecc_s32 i = 0; i < numErasePos; ++i) {
+        cppecc_u8 x = gfexp[message_size - 1 - erasePos[i]];
+        for(cppecc_s32 j = 0; j < numSyndromes - 1; ++j) {
             forney_syndromes[j] = gf_mul(forney_syndromes[j], x) ^ forney_syndromes[j + 1];
         }
     }
 }
 #endif
 
-rs_s32 rs_modified_berlekamp_massey(RSContext* context, rs_u8 result[], rs_s32 numSyndromes, const rs_u8 syndromes[])
+cppecc_s32 rs_modified_berlekamp_massey(RSContext* context, cppecc_u8 result[], cppecc_s32 numSyndromes, const cppecc_u8 syndromes[])
 {
-    rs_u8 b0[RS_MAX_ECC_SIZE + 1] = {
+    cppecc_u8 b0[CPPECC_MAX_ECC_SIZE + 1] = {
         0,
         1,
     };
-    rs_u8 b1[RS_MAX_ECC_SIZE + 1] = {
+    cppecc_u8 b1[CPPECC_MAX_ECC_SIZE + 1] = {
         1,
     };
 
-    rs_u8* sg0 = b0;
-    rs_u8* sg1 = b1;
-    rs_u8* work = context->temp0_;
-    for(rs_s32 i = 0; i <= numSyndromes; ++i) {
+    cppecc_u8* sg0 = b0;
+    cppecc_u8* sg1 = b1;
+    cppecc_u8* work = context->temp0_;
+    for(cppecc_s32 i = 0; i <= numSyndromes; ++i) {
         work[i] = 0;
     }
 
-    rs_s32 s0 = 1;
-    rs_s32 s1 = 0;
+    cppecc_s32 s0 = 1;
+    cppecc_s32 s1 = 0;
 
-    rs_s32 k = -1;
+    cppecc_s32 k = -1;
 
-    for(rs_s32 i = 0; i < numSyndromes; ++i) {
-        rs_s32 s = syndromes[i];
-        for(rs_s32 j = 1; j <= s1; ++j) {
+    for(cppecc_s32 i = 0; i < numSyndromes; ++i) {
+        cppecc_s32 s = syndromes[i];
+        for(cppecc_s32 j = 1; j <= s1; ++j) {
             s ^= gf_mul(sg1[j], syndromes[i - j]);
         }
         if(0 != s) {
-            rs_u8 l = gflog[s];
-            for(rs_s32 j = 0; j <= i; ++j) {
+            cppecc_u8 l = gflog[s];
+            for(cppecc_s32 j = 0; j <= i; ++j) {
                 work[j] = sg1[j] ^ gf_mulexp(sg0[j], l);
             }
-            rs_s32 d = i - k;
+            cppecc_s32 d = i - k;
             if(s1 < d) {
-                for(rs_s32 j = 0; j <= s0; ++j) {
+                for(cppecc_s32 j = 0; j <= s0; ++j) {
                     sg0[j] = gf_divexp(sg1[j], l);
                 }
                 k = i - s1;
                 s0 = d;
                 s1 = d;
             }
-            rs_u8* tmp = sg1;
+            cppecc_u8* tmp = sg1;
             sg1 = work;
             work = tmp;
         } //if(0 != s)
-        for(rs_s32 j = s0 - 1; 0 <= j; --j) {
+        for(cppecc_s32 j = s0 - 1; 0 <= j; --j) {
             sg0[j + 1] = sg0[j];
         }
         sg0[0] = 0;
         ++s0;
-    } //for(rs_s32 i=0
+    } //for(cppecc_s32 i=0
 
     if(0 == sg1[s1]) {
         return -1;
     }
-    rs_s32 size = s1 + 1;
-    for(rs_s32 i = 0; i < size; ++i) {
+    cppecc_s32 size = s1 + 1;
+    for(cppecc_s32 i = 0; i < size; ++i) {
         result[i] = sg1[i];
     }
     return size;
 }
 
-rs_s32 rs_chien_search(rs_u8 result[2], rs_u8 start, rs_u8 end, rs_u8 a, rs_u8 b)
+cppecc_s32 rs_chien_search(cppecc_u8 result[2], cppecc_u8 start, cppecc_u8 end, cppecc_u8 a, cppecc_u8 b)
 {
-    for(rs_u8 i = start; i < end; ++i) {
-        rs_u8 z0 = gfexp[i];
-        rs_u8 z1 = CPPRS_STATIC_CAST(rs_u8)(a) ^ z0;
+    for(cppecc_u8 i = start; i < end; ++i) {
+        cppecc_u8 z0 = gfexp[i];
+        cppecc_u8 z1 = CPPECC_STATIC_CAST(cppecc_u8)(a) ^ z0;
 
         if(b == gf_mulexp(z1, i)) {
-            rs_u8 index = gflog[z1];
+            cppecc_u8 index = gflog[z1];
             if(index <= i || end <= index) {
                 return -1;
             }
@@ -615,11 +615,11 @@ rs_s32 rs_chien_search(rs_u8 result[2], rs_u8 start, rs_u8 end, rs_u8 a, rs_u8 b
     return -1;
 }
 
-rs_s32 rs_chien_search(rs_u8 result[], rs_u8 size, rs_u8 numSigma, const rs_u8 sigma[])
+cppecc_s32 rs_chien_search(cppecc_u8 result[], cppecc_u8 size, cppecc_u8 numSigma, const cppecc_u8 sigma[])
 {
-    rs_u8 s0 = numSigma - 1;
-    rs_u8 sum = sigma[1];
-    rs_u8 mul = sigma[s0];
+    cppecc_u8 s0 = numSigma - 1;
+    cppecc_u8 sum = sigma[1];
+    cppecc_u8 mul = sigma[s0];
     if(1 == s0) {
         if(size <= gflog[sum]) {
             return -1;
@@ -631,22 +631,22 @@ rs_s32 rs_chien_search(rs_u8 result[], rs_u8 size, rs_u8 numSigma, const rs_u8 s
         return rs_chien_search(result, 0, size, sum, mul);
     }
 
-    rs_u8 temp0[4];
-    rs_u8 index = s0 - 1;
-    for(rs_u8 i = 0, z = RS_GF_NW1; i < size; ++i, --z) {
-        rs_u8 temp = 1;
-        for(rs_u8 j = 1, wz = z; j <= s0; ++j, wz = (wz + z) % RS_GF_NW1) {
+    cppecc_u8 temp0[4];
+    cppecc_u8 index = s0 - 1;
+    for(cppecc_u8 i = 0, z = CPPECC_GF_NW1; i < size; ++i, --z) {
+        cppecc_u8 temp = 1;
+        for(cppecc_u8 j = 1, wz = z; j <= s0; ++j, wz = (wz + z) % CPPECC_GF_NW1) {
             temp ^= gf_mulexp(sigma[j], wz);
         }
         if(0 != temp) {
             continue;
         }
-        rs_u8 p = gfexp[i];
+        cppecc_u8 p = gfexp[i];
         sum ^= p;
         mul = gf_div(mul, p);
         result[index--] = p;
         if(1 == index) {
-            rs_s32 t = rs_chien_search(temp0, i + 1, size, sum, mul);
+            cppecc_s32 t = rs_chien_search(temp0, i + 1, size, sum, mul);
             if(t < 0) {
                 return -1;
             }
@@ -658,26 +658,26 @@ rs_s32 rs_chien_search(rs_u8 result[], rs_u8 size, rs_u8 numSigma, const rs_u8 s
     return -1;
 }
 
-void rs_error_correct_forney(rs_u8 result[], rs_s32 length, rs_s32 numErrors, const rs_u8 pos[], rs_s32 numSigma, const rs_u8 sigma[], rs_s32 numOmega, const rs_u8 omega[])
+void rs_error_correct_forney(cppecc_u8 result[], cppecc_s32 length, cppecc_s32 numErrors, const cppecc_u8 pos[], cppecc_s32 numSigma, const cppecc_u8 sigma[], cppecc_s32 numOmega, const cppecc_u8 omega[])
 {
-    for(rs_s32 i = 0; i < numErrors; ++i) {
-        rs_u8 l = RS_GF_NW1 - gflog[pos[i]];
-        rs_u8 d = gf_sigma_dash_value(numSigma, sigma, l);
-        rs_u8 o = gf_omega_value(numOmega, omega, l);
-        rs_s32 p = length - 1 - gflog[pos[i]];
+    for(cppecc_s32 i = 0; i < numErrors; ++i) {
+        cppecc_u8 l = CPPECC_GF_NW1 - gflog[pos[i]];
+        cppecc_u8 d = gf_sigma_dash_value(numSigma, sigma, l);
+        cppecc_u8 o = gf_omega_value(numOmega, omega, l);
+        cppecc_s32 p = length - 1 - gflog[pos[i]];
         result[p] ^= gf_divexp(gf_div(o, d), l);
     }
 }
 
-rs_s32 rs_decode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSymbols)
+cppecc_s32 rs_decode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols)
 {
-    rs_s32 messageSize = size + numSymbols;
-    CPPRS_ASSERT(CPPRS_STATIC_CAST(rs_u32)(messageSize) < RS_GF_NW);
-    CPPRS_ASSERT(numSymbols <= RS_MAX_ECC_SIZE);
+    cppecc_s32 messageSize = size + numSymbols;
+    CPPECC_ASSERT(CPPECC_STATIC_CAST(cppecc_u32)(messageSize) < CPPECC_GF_NW);
+    CPPECC_ASSERT(numSymbols <= CPPECC_MAX_ECC_SIZE);
 
-    rs_u8* syndromes = context->syndromes_;
-    rs_s32 hasError = 0;
-    for(rs_s32 i = 0; i < numSymbols; ++i) {
+    cppecc_u8* syndromes = context->syndromes_;
+    cppecc_s32 hasError = 0;
+    for(cppecc_s32 i = 0; i < numSymbols; ++i) {
         syndromes[i] = gf_poly_eval(messageSize, message, gfexp[i]);
         hasError |= syndromes[i];
     }
@@ -686,26 +686,26 @@ rs_s32 rs_decode(RSContext* context, rs_s32 size, rs_u8 message[], rs_s32 numSym
         return 0;
     }
 
-    rs_u8* sigma = context->sigma_;
-    rs_s32 numSigma = rs_modified_berlekamp_massey(context, sigma, numSymbols, syndromes);
+    cppecc_u8* sigma = context->sigma_;
+    cppecc_s32 numSigma = rs_modified_berlekamp_massey(context, sigma, numSymbols, syndromes);
     if(numSigma < 0) {
-        return RS_ERROR;
+        return CPPECC_ERROR;
     }
 
-    rs_u8* errorPositions = context->errorPositions_;
-    rs_s32 numErrorPositions = rs_chien_search(errorPositions, CPPRS_STATIC_CAST(rs_u8)(messageSize), CPPRS_STATIC_CAST(rs_u8)(numSigma), sigma);
+    cppecc_u8* errorPositions = context->errorPositions_;
+    cppecc_s32 numErrorPositions = rs_chien_search(errorPositions, CPPECC_STATIC_CAST(cppecc_u8)(messageSize), CPPECC_STATIC_CAST(cppecc_u8)(numSigma), sigma);
     if(numErrorPositions < 0) {
-        return RS_ERROR;
+        return CPPECC_ERROR;
     }
-    rs_u8* omega = context->omega_;
-    rs_s32 numOmega = gf_poly_mul(omega, numSymbols, syndromes, numSigma, sigma, numSigma - 1);
+    cppecc_u8* omega = context->omega_;
+    cppecc_s32 numOmega = gf_poly_mul(omega, numSymbols, syndromes, numSigma, sigma, numSigma - 1);
 
     rs_error_correct_forney(message, messageSize, numErrorPositions, errorPositions, numSigma, sigma, numOmega, omega);
     return numSigma - 1;
 }
 
-CPPRS_NAMESPACE_EMPTY_BEGIN
-CPPRS_NAMESPACE_EMPTY_END
+CPPECC_NAMESPACE_EMPTY_BEGIN
+CPPECC_NAMESPACE_EMPTY_END
 
-CPPRS_NAMESPACE_END(cpprs)
-#endif // CPPRS_IMPLEMENTATION
+CPPECC_NAMESPACE_END(cppecc)
+#endif // CPPECC_IMPLEMENTATION

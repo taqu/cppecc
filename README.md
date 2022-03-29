@@ -2,10 +2,10 @@
 Reed-Solomon Codec in C++
 
 # Usage
-To create an implementation, put `CPPRS_IMPLEMENTATION`.
+To create an implementation, put `CPPECC_IMPLEMENTATION`.
 
-```
-#define CPPRS_IMPLEMENTATION
+``` cpp
+#define CPPECC_IMPLEMENTATION
 #include "cpprs.h"
 
 #include <cassert>
@@ -41,13 +41,13 @@ int main(void)
 }
 ```
 
-## Generation Polynomial
-I choose a primitive `0x11D` for the generation polynomial (from the specification of The QR code).
-You may be able to change it, but should regenerate tables 'gfexp' and 'gflog'.
-
-## Limitations
+# Limitations
 I limit the size of redundant symbols (error correction capacity) for my use. It's equivalent to about 10% error correnction capability.
 You can change this with the constant `RS_MAX_ECC_SIZE`.
+
+## Generation Polynomial
+I choose a primitive `0x11D` for the generation polynomial (from the specification of the QR code).
+You may be able to change it, but should regenerate tables 'gfexp' and 'gflog'.
 
 # License
 This software is distributed under two licenses 'The MIT License' or 'Public Domain', choose whichever you like.
