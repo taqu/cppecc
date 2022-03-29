@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.2)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug" "Release")
 
-set(ProjectName cpprs)
+set(ProjectName cppecc)
 project(${ProjectName})
 
-set(HEADERS "cpprs.h")
+set(HEADERS "cppecc.h")
 set(SOURCES "test.cpp")
 
 ########################################################################

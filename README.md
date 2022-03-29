@@ -6,7 +6,7 @@ To create an implementation, put `CPPECC_IMPLEMENTATION`.
 
 ``` cpp
 #define CPPECC_IMPLEMENTATION
-#include "cpprs.h"
+#include "cppecc.h"
 
 #include <cassert>
 #include <algorithm>
@@ -42,12 +42,15 @@ int main(void)
 ```
 
 # Limitations
-I limit the size of redundant symbols (error correction capacity) for my use. It's equivalent to about 10% error correnction capability.
-You can change this with the constant `RS_MAX_ECC_SIZE`.
+I limit the size of redundant symbols (that means the error correction capacity) for my use. It's equivalent to about 10% error correnction capability.
+You can change this with the constant `CPPECC_MAX_ECC_SIZE`.
 
 ## Generation Polynomial
 I choose a primitive `0x11D` for the generation polynomial (from the specification of the QR code).
 You may be able to change it, but should regenerate tables 'gfexp' and 'gflog'.
+
+# Warning
+I'm not a mathematician, an engineer. Use carefully, when you use this.
 
 # License
 This software is distributed under two licenses 'The MIT License' or 'Public Domain', choose whichever you like.

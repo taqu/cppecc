@@ -215,7 +215,7 @@ void rs_encode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_
  @param [in] size ... message size
  @param [in, out] message[] ... The size should be 'size + numSymbols'. Output's corrupted symbols will be corrected.
  @param numSymbols ... size of redundant symbols, that is equivalent to capability of error corrections.
- @return The number of corrected symbols. When the number of erros exceeds the capability (so, it's numSymbols/2), the original message may not be recovered.
+ @return The number of corrected symbols. When the number of erros exceeds the capability (so, it's numSymbols/2), the original message might not be recovered.
  */
 cppecc_s32 rs_decode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols);
 

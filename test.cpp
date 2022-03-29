@@ -1,5 +1,5 @@
 #define CPPECC_IMPLEMENTATION
-#include "cpprs.h"
+#include "cppecc.h"
 
 #include <stdio.h>
 #include <string.h>
