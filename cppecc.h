@@ -142,6 +142,8 @@ static const cppecc_s32 CPPECC_MAX_ECC_RATE = 10;
 
 static const cppecc_s32 CPPECC_ERROR = -1;
 
+#    define CPPECC_STRUCT
+
 #else
 #    define CPPECC_GF_W (8)
 #    define CPPECC_GF_NW (1 << CPPECC_GF_W)
@@ -153,6 +155,8 @@ static const cppecc_s32 CPPECC_ERROR = -1;
 #    define CPPECC_MAX_ECC_RATE (10)
 
 #    define CPPECC_ERROR (-1)
+
+#    define CPPECC_STRUCT struct
 #endif
 
 struct RSContext
@@ -171,7 +175,7 @@ struct RSContext
  @param [in,out] context
  @param [in] numSymbols
  */
-void gf_initialize(RSContext* context, cppecc_s32 numSymbols);
+void gf_initialize(CPPECC_STRUCT RSContext* context, cppecc_s32 numSymbols);
 
 cppecc_u8 gf_add(cppecc_u8 a, cppecc_u8 b);
 
@@ -188,6 +192,7 @@ void gf_poly_scale(cppecc_s32 size, cppecc_u8 result[], const cppecc_u8 p[], cpp
 cppecc_s32 gf_poly_add(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[]);
 
 cppecc_s32 gf_poly_mul(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[]);
+cppecc_s32 gf_poly_mul_len(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[], cppecc_s32 l);
 
 cppecc_u8 gf_poly_eval(cppecc_s32 size, const cppecc_u8 poly[], cppecc_u8 x);
 
@@ -195,8 +200,8 @@ cppecc_s32 gf_poly_div(cppecc_u8 result[], cppecc_s32 sizeDividend, const cppecc
 
 void rs_generator_poly(cppecc_s32 size, cppecc_u8 result[], cppecc_u8 tmp[]);
 
-cppecc_s32 rs_modified_berlekamp_massey(RSContext* context, cppecc_u8 result[], cppecc_s32 numSyndromes, const cppecc_u8 syndromes[]);
-cppecc_s32 rs_chien_search(cppecc_u8 result[2], cppecc_u8 start, cppecc_u8 end, cppecc_u8 a, cppecc_u8 b);
+cppecc_s32 rs_modified_berlekamp_massey(CPPECC_STRUCT RSContext* context, cppecc_u8 result[], cppecc_s32 numSyndromes, const cppecc_u8 syndromes[]);
+cppecc_s32 rs_chien_search_two(cppecc_u8 result[2], cppecc_u8 start, cppecc_u8 end, cppecc_u8 a, cppecc_u8 b);
 cppecc_s32 rs_chien_search(cppecc_u8 result[], cppecc_u8 size, cppecc_u8 numSigma, const cppecc_u8 sigma[]);
 void rs_error_correct_forney(cppecc_u8 result[], cppecc_s32 length, cppecc_s32 numErrors, const cppecc_u8 pos[], cppecc_s32 numSigma, const cppecc_u8 sigma[], cppecc_s32 numOmega, const cppecc_u8 omega[]);
 
@@ -207,7 +212,7 @@ void rs_error_correct_forney(cppecc_u8 result[], cppecc_s32 length, cppecc_s32 n
  @param [in, out] message[] ... The size should be 'size + numSymbols'. Output will be made from the original message and added redundant symbols (that size is numSymbols).
  @param numSymbols ... size of redundant symbols, that is equivalent to capability of error corrections * 2.
  */
-void rs_encode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols);
+void rs_encode(CPPECC_STRUCT RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols);
 
 /**
  @brief Try to recover the original message from redundant symbols. But, when the number of errors exceeds the capability of Reed-Solomon codes, the message never be recoverted correctly.
@@ -217,7 +222,7 @@ void rs_encode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_
  @param numSymbols ... size of redundant symbols, that is equivalent to capability of error corrections.
  @return The number of corrected symbols. When the number of erros exceeds the capability (so, it's numSymbols/2), the original message might not be recovered.
  */
-cppecc_s32 rs_decode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols);
+cppecc_s32 rs_decode(CPPECC_STRUCT RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols);
 
 CPPECC_NAMESPACE_END(cppecc)
 #endif // INC_CPPECC_H_
@@ -267,12 +272,12 @@ static const cppecc_u8 gfexp[CPPECC_GF_NW]={
     0x12U,0x24U,0x48U,0x90U,0x3DU,0x7AU,0xF4U,0xF5U,0xF7U,0xF3U,0xFBU,0xEBU,0xCBU,0x8BU,0xBU,0x16U,
     0x2CU,0x58U,0xB0U,0x7DU,0xFAU,0xE9U,0xCFU,0x83U,0x1BU,0x36U,0x6CU,0xD8U,0xADU,0x47U,0x8EU,0xCCU,
 };
-// clang-format off
+// clang-format on
 
 CPPECC_NAMESPACE_EMPTY_END
 
 //
-void gf_initialize(RSContext* context, cppecc_s32 numSymbols)
+void gf_initialize(CPPECC_STRUCT RSContext* context, cppecc_s32 numSymbols)
 {
     rs_generator_poly(numSymbols, context->generator_, context->temp0_);
 }
@@ -384,7 +389,7 @@ cppecc_s32 gf_poly_mul(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[]
     return total;
 }
 
-cppecc_s32 gf_poly_mul(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[], cppecc_s32 l)
+cppecc_s32 gf_poly_mul_len(cppecc_u8 result[], cppecc_s32 psize, const cppecc_u8 p[], cppecc_s32 qsize, const cppecc_u8 q[], cppecc_s32 l)
 {
     cppecc_s32 total = l;
     for(cppecc_s32 i = 0; i < total; ++i) {
@@ -481,7 +486,7 @@ void rs_generator_poly(cppecc_s32 size, cppecc_u8 result[], cppecc_u8 tmp[])
     }
 }
 
-void rs_encode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols)
+void rs_encode(CPPECC_STRUCT RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols)
 {
     CPPECC_ASSERT(CPPECC_NULL != context);
     CPPECC_ASSERT(CPPECC_STATIC_CAST(cppecc_u32)(size + numSymbols) < CPPECC_GF_NW);
@@ -534,7 +539,7 @@ void rs_forney_syndromes(cppecc_u8 forney_syndromes[], cppecc_s32 message_size, 
 }
 #endif
 
-cppecc_s32 rs_modified_berlekamp_massey(RSContext* context, cppecc_u8 result[], cppecc_s32 numSyndromes, const cppecc_u8 syndromes[])
+cppecc_s32 rs_modified_berlekamp_massey(CPPECC_STRUCT RSContext* context, cppecc_u8 result[], cppecc_s32 numSyndromes, const cppecc_u8 syndromes[])
 {
     cppecc_u8 b0[CPPECC_MAX_ECC_SIZE + 1] = {
         0,
@@ -596,7 +601,7 @@ cppecc_s32 rs_modified_berlekamp_massey(RSContext* context, cppecc_u8 result[], 
     return size;
 }
 
-cppecc_s32 rs_chien_search(cppecc_u8 result[2], cppecc_u8 start, cppecc_u8 end, cppecc_u8 a, cppecc_u8 b)
+cppecc_s32 rs_chien_search_two(cppecc_u8 result[2], cppecc_u8 start, cppecc_u8 end, cppecc_u8 a, cppecc_u8 b)
 {
     for(cppecc_u8 i = start; i < end; ++i) {
         cppecc_u8 z0 = gfexp[i];
@@ -628,7 +633,7 @@ cppecc_s32 rs_chien_search(cppecc_u8 result[], cppecc_u8 size, cppecc_u8 numSigm
         return 1;
     }
     if(2 == s0) {
-        return rs_chien_search(result, 0, size, sum, mul);
+        return rs_chien_search_two(result, 0, size, sum, mul);
     }
 
     cppecc_u8 temp0[4];
@@ -646,7 +651,7 @@ cppecc_s32 rs_chien_search(cppecc_u8 result[], cppecc_u8 size, cppecc_u8 numSigm
         mul = gf_div(mul, p);
         result[index--] = p;
         if(1 == index) {
-            cppecc_s32 t = rs_chien_search(temp0, i + 1, size, sum, mul);
+            cppecc_s32 t = rs_chien_search_two(temp0, i + 1, size, sum, mul);
             if(t < 0) {
                 return -1;
             }
@@ -669,7 +674,7 @@ void rs_error_correct_forney(cppecc_u8 result[], cppecc_s32 length, cppecc_s32 n
     }
 }
 
-cppecc_s32 rs_decode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols)
+cppecc_s32 rs_decode(CPPECC_STRUCT RSContext* context, cppecc_s32 size, cppecc_u8 message[], cppecc_s32 numSymbols)
 {
     cppecc_s32 messageSize = size + numSymbols;
     CPPECC_ASSERT(CPPECC_STATIC_CAST(cppecc_u32)(messageSize) < CPPECC_GF_NW);
@@ -698,7 +703,7 @@ cppecc_s32 rs_decode(RSContext* context, cppecc_s32 size, cppecc_u8 message[], c
         return CPPECC_ERROR;
     }
     cppecc_u8* omega = context->omega_;
-    cppecc_s32 numOmega = gf_poly_mul(omega, numSymbols, syndromes, numSigma, sigma, numSigma - 1);
+    cppecc_s32 numOmega = gf_poly_mul_len(omega, numSymbols, syndromes, numSigma, sigma, numSigma - 1);
 
     rs_error_correct_forney(message, messageSize, numErrorPositions, errorPositions, numSigma, sigma, numOmega, omega);
     return numSigma - 1;

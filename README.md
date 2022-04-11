@@ -1,4 +1,4 @@
-# cpprs
+# cppecc
 Reed-Solomon Codec in C++
 
 # Usage
